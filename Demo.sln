@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32630.192
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo.APICore", "Demo\Demo.APICore.csproj", "{010A33B5-8D49-4A45-B535-40E60F272219}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.APICore", "Demo\Demo.APICore.csproj", "{010A33B5-8D49-4A45-B535-40E60F272219}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo.Client", "Demo.Client\Demo.Client.csproj", "{178F123F-0FFA-472A-967D-C1FAC7070EA2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.Client", "Demo.Client\Demo.Client.csproj", "{178F123F-0FFA-472A-967D-C1FAC7070EA2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityServer", "IdentityServer\IdentityServer.csproj", "{B4CF9B90-E31E-4297-A5DA-DECAFE1934B7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.Identity", "IdentityServer\Demo.Identity.csproj", "{B4CF9B90-E31E-4297-A5DA-DECAFE1934B7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

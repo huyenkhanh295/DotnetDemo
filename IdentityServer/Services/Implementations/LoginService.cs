@@ -67,7 +67,7 @@ namespace IdentityServer.Services.Implementations
             }
         }
 
-        public User GetExistedUser(LoginRequestModel m)
+        public User? GetExistedUser(LoginRequestModel m)
         {
             return UserList.Users.FirstOrDefault(u => u.Username == m.Username && u.Password == m.Password);
         }
