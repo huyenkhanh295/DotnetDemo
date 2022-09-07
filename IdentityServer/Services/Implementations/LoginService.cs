@@ -45,6 +45,10 @@ namespace Demo.Identity.Services.Implementations
                         new Claim("Username", model.Username),
                     };
 
+
+                var permission = GetUserPermissions(existedUser.Id);
+                permission.ToList();
+
                 var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
                 var signIn = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
                 var token = new JwtSecurityToken(
@@ -74,6 +78,12 @@ namespace Demo.Identity.Services.Implementations
         public async Task<User?> GetExistedUser(LoginRequestModel m)
         {
             return await _dbContext.Users.FirstOrDefaultAsync(u => u.UserName == m.Username && u.Password == m.Password);
+        }
+
+        public IEnumerable<Permission> GetUserPermissions(long userId)
+        {
+            var roles = _dbContext.Roles.Where(x => x.Users.Any(y => y.Id == userId && y.Status == 1) && x.Permissions.Any());
+            return roles.SelectMany(x => x.Permissions);
         }
     }
 }
