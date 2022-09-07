@@ -1,5 +1,6 @@
-using IdentityServer.Services.Interfaces;
-using IdentityServer.ViewModel;
+using Demo.Database;
+using Demo.Identity.Services.Interfaces;
+using Demo.Identity.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -24,6 +25,7 @@ namespace IdentityServer.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginRequestModel model)
         {
+            var c = new Class1().Test();
             var result = await _loginService.GetToken(model);
             if (result.Success)
             {

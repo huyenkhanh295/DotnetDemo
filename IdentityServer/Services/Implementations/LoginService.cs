@@ -1,19 +1,23 @@
-﻿using IdentityServer.Models;
-using IdentityServer.Services.Interfaces;
-using IdentityServer.ViewModel;
+﻿using Demo.Database.Models;
+using Demo.Identity.Services.Interfaces;
+using Demo.Identity.ViewModel;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace IdentityServer.Services.Implementations
+namespace Demo.Identity.Services.Implementations
 {
     public class LoginService : ILoginService
     {
+        private readonly DemoIdentityContext _dbContext;
         public IConfiguration _configuration;
-        public LoginService(IConfiguration config)
+
+        public LoginService(IConfiguration config, DemoIdentityContext dbContext)
         {
             _configuration = config;
+            _dbContext = dbContext;
         }
 
         public async Task<LoginResponseModel> GetToken(LoginRequestModel model)
@@ -27,7 +31,7 @@ namespace IdentityServer.Services.Implementations
                     AccessToken = "",
                 };
 
-                var existedUser = GetExistedUser(model);
+                var existedUser = await GetExistedUser(model);
                 if (existedUser == null)
                 {
                     result.Message = "No user found!";
@@ -67,9 +71,9 @@ namespace IdentityServer.Services.Implementations
             }
         }
 
-        public User? GetExistedUser(LoginRequestModel m)
+        public async Task<User?> GetExistedUser(LoginRequestModel m)
         {
-            return UserList.Users.FirstOrDefault(u => u.Username == m.Username && u.Password == m.Password);
+            return await _dbContext.Users.FirstOrDefaultAsync(u => u.UserName == m.Username && u.Password == m.Password);
         }
     }
 }

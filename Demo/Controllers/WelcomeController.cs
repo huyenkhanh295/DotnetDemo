@@ -1,4 +1,5 @@
 using Demo.APICore.ViewModel;
+using Demo.Database;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,6 +18,8 @@ namespace Demo.Controllers
                 Success = true,
                 Message = "Welcome to Demo project"
             };
+
+            var c = new Class1().Test();
             return Ok(res);
         }
     }

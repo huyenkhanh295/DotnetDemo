@@ -1,4 +1,4 @@
-﻿namespace IdentityServer.ViewModel
+﻿namespace Demo.Identity.ViewModel
 {
     public class LoginRequestModel
     {

@@ -1,6 +1,6 @@
-﻿using IdentityServer.ViewModel;
+﻿using Demo.Identity.ViewModel;
 
-namespace IdentityServer.Services.Interfaces
+namespace Demo.Identity.Services.Interfaces
 {
     public interface ILoginService
     {
