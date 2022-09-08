@@ -38,7 +38,7 @@ namespace Demo.Identity.Services.Implementations
                     return result;
                 }
 
-                var claims = new[] {
+                var claims = new List<Claim> {
                         new Claim(JwtRegisteredClaimNames.Sub, _configuration["Jwt:Subject"]),
                         new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                         new Claim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToString()),
@@ -46,8 +46,14 @@ namespace Demo.Identity.Services.Implementations
                     };
 
 
-                var permission = GetUserPermissions(existedUser.Id);
-                permission.ToList();
+                var permissions = GetUserPermissions(existedUser.Id).ToList();
+                if(permissions.Count() > 0)
+                {
+                    foreach (var permission in permissions)
+                    {
+                        claims.Add(new Claim("role", permission.PermissionCode));
+                    }
+                }    
 
                 var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
                 var signIn = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);

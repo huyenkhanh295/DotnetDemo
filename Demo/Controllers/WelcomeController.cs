@@ -2,14 +2,15 @@ using Demo.APICore.ViewModel;
 using Demo.Database;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Demo.APICore.Constant;
 
 namespace Demo.Controllers
 {
     [ApiController]
-    [Authorize]
     [Route("api/welcome")]
     public class WelcomeController : ControllerBase
     {
+        [Authorize(Roles = "ViewUser")]
         [HttpGet]
         public async Task<IActionResult> GetWelcomeText()
         {
