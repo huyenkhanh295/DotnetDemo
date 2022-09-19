@@ -1,8 +1,7 @@
+using Demo.APICore.Constant;
 using Demo.APICore.ViewModel;
-using Demo.Database;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Demo.APICore.Constant;
 
 namespace Demo.Controllers
 {
@@ -10,7 +9,7 @@ namespace Demo.Controllers
     [Route("api/welcome")]
     public class WelcomeController : ControllerBase
     {
-        [Authorize(Roles = "ViewUser")]
+        [Authorize(Roles = Permission.User.View)]
         [HttpGet]
         public async Task<IActionResult> GetWelcomeText()
         {
@@ -20,7 +19,6 @@ namespace Demo.Controllers
                 Message = "Welcome to Demo project"
             };
 
-            var c = new Class1().Test();
             return Ok(res);
         }
     }

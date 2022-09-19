@@ -6,7 +6,7 @@
         {
             public const string View = "ViewUser";
             public const string Create = "CreateUser";
-            public const string Edit = "EditUser";
+            public const string Update = "UpdateUser";
             public const string Delete = "DeleteUser";
         }
 
@@ -14,7 +14,7 @@
         {
             public const string View = "ViewRole";
             public const string Create = "CreateRole";
-            public const string Edit = "EditRole";
+            public const string Update = "UpdateRole";
             public const string Delete = "DeleteRole";
         }
     }

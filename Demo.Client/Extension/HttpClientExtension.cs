@@ -44,4 +44,13 @@ public class HttpClientExtension
 
         return result;
     }
+
+    public Task<TResult> Get<TResult>(string path)
+    {
+        var response = _httpClient.GetAsync(path);
+        var stringContent = response.Result.Content.ReadAsStringAsync();
+        var result = JsonConvert.DeserializeObject<TResult>(stringContent.Result);
+
+        return Task.FromResult(result);
+    }
 }

@@ -1,7 +1,6 @@
 ﻿using Demo.Client.Constant;
 using Demo.Client.Extension;
 using Demo.Client.ViewModel;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Demo.Client.Controllers
@@ -10,7 +9,6 @@ namespace Demo.Client.Controllers
     [Route("api/client")]
     public class WeatherForecastController : ControllerBase
     {
-        [AllowAnonymous]
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginRequestModel model)
         {
@@ -20,14 +18,13 @@ namespace Demo.Client.Controllers
             return Ok(result);
         }
 
-        [Authorize]
         [HttpGet("welcome")]
-        public async Task<IActionResult> Get()
+        public IActionResult Get()
         {
             var httpClient = HttpClientExtension.Instance("https://localhost:7244/");
-            var result = await httpClient.SetToken(StaticConstant.Token).GetAsync<WelcomeResponseModel>("api/welcome");
+            var result = httpClient.SetToken("Bearer " + StaticConstant.Token).Get<WelcomeResponseModel>("api/welcome");
 
-            return Ok(result);
+            return Ok(result.Result);
         }
     }
 }

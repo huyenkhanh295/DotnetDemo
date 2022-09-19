@@ -1,4 +1,3 @@
-using Demo.Database;
 using Demo.Identity.Services.Interfaces;
 using Demo.Identity.ViewModel;
 using Microsoft.AspNetCore.Mvc;
@@ -23,17 +22,16 @@ namespace IdentityServer.Controllers
         /// <param name="model">LoginRequestModel</param>
         /// <returns>Return a result</returns>
         [HttpPost]
-        public async Task<IActionResult> Login(LoginRequestModel model)
+        public IActionResult Login(LoginRequestModel model)
         {
-            var c = new Class1().Test();
-            var result = await _loginService.GetToken(model);
-            if (result.Success)
+            var result = _loginService.GetToken(model);
+            if (result?.Result != null && result.Result.Success)
             {
-                return Ok(result);
+                return Ok(result?.Result);
             }
             else
             {
-                return StatusCode((int)HttpStatusCode.Unauthorized, result); ;
+                return StatusCode((int)HttpStatusCode.Unauthorized, result.Result);
             }
         }
     }

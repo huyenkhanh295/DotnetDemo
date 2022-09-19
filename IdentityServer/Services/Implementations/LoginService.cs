@@ -20,7 +20,7 @@ namespace Demo.Identity.Services.Implementations
             _dbContext = dbContext;
         }
 
-        public async Task<LoginResponseModel> GetToken(LoginRequestModel model)
+        public Task<LoginResponseModel> GetToken(LoginRequestModel model)
         {
             try
             {
@@ -31,29 +31,29 @@ namespace Demo.Identity.Services.Implementations
                     AccessToken = "",
                 };
 
-                var existedUser = await GetExistedUser(model);
+                var existedUser = GetExistedUser(model);
                 if (existedUser == null)
                 {
                     result.Message = "No user found!";
-                    return result;
+                    return Task.FromResult(result);
                 }
 
                 var claims = new List<Claim> {
                         new Claim(JwtRegisteredClaimNames.Sub, _configuration["Jwt:Subject"]),
                         new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                         new Claim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToString()),
-                        new Claim("Username", model.Username),
+                        new Claim("UserName", existedUser.Result.UserName),
                     };
 
 
                 var permissions = GetUserPermissions(existedUser.Id).ToList();
-                if(permissions.Count() > 0)
+                if (permissions.Any())
                 {
                     foreach (var permission in permissions)
                     {
-                        claims.Add(new Claim("role", permission.PermissionCode));
+                        claims.Add(new Claim(ClaimTypes.Role, permission.PermissionCode));
                     }
-                }    
+                }
 
                 var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
                 var signIn = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
@@ -68,22 +68,22 @@ namespace Demo.Identity.Services.Implementations
                 result.Message = "Successfully";
                 result.AccessToken = new JwtSecurityTokenHandler().WriteToken(token);
 
-                return result;
+                return Task.FromResult(result);
             }
             catch (Exception)
             {
-                return new LoginResponseModel
+                return Task.FromResult(new LoginResponseModel
                 {
                     Success = false,
                     Message = "Login fail",
                     AccessToken = "",
-                };
+                });
             }
         }
 
-        public async Task<User?> GetExistedUser(LoginRequestModel m)
+        public Task<User?> GetExistedUser(LoginRequestModel m)
         {
-            return await _dbContext.Users.FirstOrDefaultAsync(u => u.UserName == m.Username && u.Password == m.Password);
+            return _dbContext.Users.FirstOrDefaultAsync(u => u.UserName == m.Username && u.Password == m.Password);
         }
 
         public IEnumerable<Permission> GetUserPermissions(long userId)
