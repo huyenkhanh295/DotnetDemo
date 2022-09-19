@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Demo.Client.ViewModel;
+using Newtonsoft.Json;
 using System.Net.Http.Headers;
 
 namespace Demo.Client.Extension;
@@ -36,21 +37,13 @@ public class HttpClientExtension
         return result;
     }
 
-    public async Task<TResult> GetAsync<TResult>(string path)
+    public async Task<TResult> GetAsync<TResult>(string path) where TResult : BaseModel, new()
     {
+        var result = new TResult();
         var response = await _httpClient.GetAsync(path);
-        var stringContent = await response.Content.ReadAsStringAsync();
-        var result = JsonConvert.DeserializeObject<TResult>(stringContent);
+        result.Content = await response.Content.ReadAsStringAsync();
+        result.StatusCode = response.StatusCode;
 
         return result;
-    }
-
-    public Task<TResult> Get<TResult>(string path)
-    {
-        var response = _httpClient.GetAsync(path);
-        var stringContent = response.Result.Content.ReadAsStringAsync();
-        var result = JsonConvert.DeserializeObject<TResult>(stringContent.Result);
-
-        return Task.FromResult(result);
     }
 }

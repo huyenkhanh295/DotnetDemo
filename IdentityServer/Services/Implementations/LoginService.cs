@@ -46,7 +46,7 @@ namespace Demo.Identity.Services.Implementations
                     };
 
 
-                var permissions = GetUserPermissions(existedUser.Id).ToList();
+                var permissions = GetUserPermissions(existedUser.Result.Id).ToList();
                 if (permissions.Any())
                 {
                     foreach (var permission in permissions)
@@ -54,6 +54,10 @@ namespace Demo.Identity.Services.Implementations
                         claims.Add(new Claim(ClaimTypes.Role, permission.PermissionCode));
                     }
                 }
+                //else
+                //{
+                //    claims.Add(new Claim(ClaimTypes.Role, Infrastructure.Constant.Permission.User.None));
+                //}
 
                 var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
                 var signIn = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);

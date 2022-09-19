@@ -1,16 +1,17 @@
-﻿namespace Demo.APICore.Constant
+﻿namespace Infrastructure.Constant
 {
-    public static class Permission
+    public struct Permission
     {
-        public static class User
+        public struct User
         {
+            public const string None = "None";
             public const string View = "ViewUser";
             public const string Create = "CreateUser";
             public const string Update = "UpdateUser";
             public const string Delete = "DeleteUser";
         }
 
-        public static class Role
+        public struct Role
         {
             public const string View = "ViewRole";
             public const string Create = "CreateRole";

@@ -19,12 +19,12 @@ namespace Demo.Client.Controllers
         }
 
         [HttpGet("welcome")]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
             var httpClient = HttpClientExtension.Instance("https://localhost:7244/");
-            var result = httpClient.SetToken("Bearer " + StaticConstant.Token).Get<WelcomeResponseModel>("api/welcome");
+            var result = await httpClient.SetToken("Bearer " + StaticConstant.Token).GetAsync<WelcomeResponseModel>("api/welcome");
 
-            return Ok(result.Result);
+            return StatusCode((int)result.StatusCode, result.Message);
         }
     }
 }
